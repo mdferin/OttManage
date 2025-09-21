@@ -1,0 +1,12 @@
+{
+    "claimed_otts": [
+        "test-restriction"
+    ],
+    "registration_date": 1758498415,
+    "user_info": {
+        "id": "987654321",
+        "username": "testuser",
+        "first_name": "Test",
+        "last_name": "User"
+    }
+}
