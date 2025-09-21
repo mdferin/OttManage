@@ -1,0 +1,14 @@
+[Unit]
+Description=OTT Manager Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/ott
+ExecStart=/usr/bin/python3 /var/www/ott/bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
