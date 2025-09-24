@@ -1,142 +1,200 @@
-# OTT Manager Telegram Bot
+# 🎬 OTT Manager Telegram Bot
 
-A comprehensive Telegram bot for managing OTT (Over-The-Top) service subscriptions with user management, service provisioning, and announcement capabilities.
+A comprehensive 🤖 Telegram bot for managing OTT (Over-The-Top) streaming services. This bot allows administrators to create, extend, and delete OTT service entries, while users can claim and access these services for streaming content.
 
-## Features
+## 📚 Table of Contents
+- [✨ Features](#-features)
+- [📋 Prerequisites](#-prerequisites)
+- [💾 Installation](#-installation)
+- [⚙️ Configuration](#️-configuration)
+- [🎮 Usage](#-usage)
+- [⌨️ Commands](#-commands)
+- [📁 File Structure](#-file-structure)
+- [🔒 Security Considerations](#-security-considerations)
+- [📄 License](#-license)
 
-### 📺 OTT Service Management
-- **Create Services**: Generate new OTT service entries with custom IDs and durations
-- **Extend Services**: Extend existing service validity periods
-- **Delete Services**: Remove OTT service entries
-- **List Services**: View all active services with expiration status indicators
-- **Automatic Expiry Notifications**: Daily checks for expiring services with automated user reminders
+## ✨ Features
 
-### 👥 User Management
-- **User Registration**: Automatic user registration when they claim services
-- **View Users**: List all registered users with their information
-- **Delete Users**: Remove user records and their claimed services
+- **👥 Admin Management**: Create, extend, and delete OTT service entries
+- **🎁 User Claims**: Users can claim OTT services via unique links
+- **⏰ Expiration Tracking**: Automatic tracking and notification of expiring services
+- **👤 User Management**: Admins can view all users and delete user records
+- **📢 Announcement System**: Send announcements to all registered users (text or photo)
+- **🌍 Timezone Support**: Uses Malaysia timezone (Asia/Kuala_Lumpur) for all dates
+- **🚫 Duplicate Prevention**: Prevents multiple claims of the same OTT ID
+- **🔔 Reminder System**: Automated reminders sent before service expiration (7, 3, and 1 day warnings)
 
-### 📢 Announcement System
-- **Text Announcements**: Send text messages to all registered users
-- **Photo Announcements**: Send photos with captions to all registered users
-- **Preview System**: Preview announcements before sending with Cancel/Send options
-- **Automatic Cleanup**: Removes both preview and original announcement messages after processing
+## 📋 Prerequisites
 
-### 🔐 Security & Access Control
-- **Admin-Only Commands**: All management commands restricted to authorized administrators
-- **Service Claim Protection**: Prevents duplicate claims and unauthorized access
-- **Device Limiting**: Built-in device limit enforcement per service
+- 🐍 Python 3.8 or higher
+- 🤖 Telegram Bot Token (obtained from @BotFather)
+- 📚 Required Python libraries (see Installation)
 
-## Commands
+## 💾 Installation
 
-### Admin Commands
-- `/create <id> <duration>` - Deploy new OTT service (e.g., `/create rtm-41806 90days`)
-- `/extend <id> <duration>` - Extend service validity (e.g., `/extend rtm-41806 30days`)
-- `/delete <id>` - Remove OTT service (requires confirmation)
-- `/deleteuser <user_id>` - Remove user record
-- `/list` - View all active services
-- `/users` - View all registered users
-- `/announce <message>` - Send announcement to all users (text or photo with caption)
+1. 📁 Clone the repository or download the bot.py file
+2. 📦 Install the required dependencies:
 
-### User Commands
-- `/start` - Initialize bot and access services
-- `/claim_<id>` - Claim and access OTT services (sent via service links)
-
-## Setup
-
-### Prerequisites
-- Python 3.7+
-- Telegram Bot Token (obtained from [@BotFather](https://t.me/BotFather))
-
-### Installation
-
-1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd ott-manager-bot
+pip install python-telegram-bot pytz
 ```
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
+3. ✅ Make sure you have the required Python libraries installed
+
+## ⚙️ Configuration
+
+Before running the bot, you need to configure the following:
+
+1. **🤖 Bot Token**: Replace the `BOT_TOKEN` in the code with your actual bot token
+2. **👥 Admin IDs**: Update the `ADMIN_IDS` list with the Telegram user IDs of administrators
+3. **👤 Admin Usernames**: Update the `ADMIN_USERNAMES` dictionary with admin usernames for support contact
+
+Example configuration:
+```python
+BOT_TOKEN = "YOUR_ACTUAL_BOT_TOKEN_HERE"
+ADMIN_IDS = ["123456789", "987654321"]  # Replace with actual Telegram user IDs
+ADMIN_USERNAMES = {
+    "123456789": "admin_username",
+    "987654321": "another_admin"
+}
 ```
 
-3. Configure the bot:
-   - Set your `BOT_TOKEN` in the code
-   - Update `ADMIN_IDS` with your Telegram user IDs
-   - Modify `ADMIN_USERNAMES` with corresponding usernames
+## 🎮 Usage
 
-4. Run the bot:
+### 🚀 Starting the Bot
+
+Run the bot with:
 ```bash
 python bot.py
 ```
 
-### Dependencies
-- `python-telegram-bot==20.0` - Telegram Bot API wrapper
-- `pytz==2023.3` - Timezone handling
+### 🙋 For Users
 
-## Configuration
+1. 🎯 Start the bot with `/start` command
+2. 🔗 Use claim links (e.g., `https://t.me/yourbot?start=claim_ott-id`) to claim OTT services
+3. 📺 Access your claimed services with the provided URLs
 
-### Admin Setup
-1. Get your Telegram user ID by messaging [@userinfobot](https://t.me/userinfobot) or using bot commands
-2. Add your user ID to the `ADMIN_IDS` list
-3. Add your username to the `ADMIN_USERNAMES` dictionary
+### 👮‍♂️ For Administrators
 
-### Service Configuration
-- Services are stored as JSON files in the `database/` directory
-- User data is stored as JSON files in the `users/` directory
-- Announcements are stored in the `announcements/` directory
+After starting the bot, you'll see the admin control panel with the following commands:
 
-## Usage Examples
+#### 🛠️ Management Commands
+- `/create <ott_id> <duration>` - Create a new OTT service entry
+- `/extend <ott_id> <duration>` - Extend an existing OTT service
+- `/delete <ott_id>` - Delete an OTT service entry
+- `/deleteuser <user_id>` - Remove a user's record
+- `/list` - View all active services
+- `/users` - View all registered users
+- `/announce <message>` - Send announcement to all users
 
-### Creating a Service
+#### ➕ Creating an OTT Service
+
+To create a new OTT service:
 ```
-/create premium-service-001 90days
-```
-
-### Extending a Service
-```
-/extend premium-service-001 30days
+/create rtm-41806 90days
 ```
 
-### Sending an Announcement
-**Text Announcement:**
-```
-/announce Important update: Server maintenance scheduled for tomorrow.
-```
+This will create an OTT service with ID "rtm-41806" that expires in 90 days. The bot will generate a claim link that users can use to access the service.
 
-**Photo Announcement:**
-Send a photo with the caption:
+#### 🔁 Extending an OTT Service
+
+To extend an existing OTT service:
 ```
-/announce Check out our new premium channels!
+/extend rtm-41806 30days
 ```
 
-## Technical Details
+This will add 30 days to the current expiration date of the service.
 
-### Data Structure
-- **Services**: Stored as JSON files with expiration dates, device limits, and playlist information
-- **Users**: Stored as JSON files with claimed services, registration dates, and user info
-- **Announcements**: Stored as JSON files with message content and delivery metadata
+#### ❌ Deleting an OTT Service
 
-### Automatic Features
-- **Daily Expiry Checks**: Runs daily at 09:00 Malaysia time to check for expiring services
-- **User Notifications**: Automatically sends reminders to users 7, 3, and 1 day before service expiration
-- **Folder Management**: Automatically creates required directories on startup
+To delete an OTT service:
+```
+/delete rtm-41806
+```
 
-### Error Handling
-- Comprehensive error handling for file operations, network issues, and user input
-- Detailed logging for debugging and monitoring
-- Graceful degradation when individual operations fail
+You'll be prompted to confirm the deletion to prevent accidental removals.
 
-## Contributing
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a pull request
+## ⌨️ Commands Reference
 
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### 👤 User Commands
+- `/start` - Start the bot and receive welcome message
 
-## Support
-For support, contact the administrators listed in the bot's admin panel or open an issue on GitHub.
+### 👮 Admin Commands
+- `/create <id> <duration>` - Deploy new OTT service
+- `/extend <id> <duration>` - Extend service validity
+- `/delete <id>` - Remove OTT service
+- `/deleteuser <user_id>` - Remove user record
+- `/list` - View all active services
+- `/users` - View all registered users
+- `/announce <message>` - Send announcement to all users (with preview)
+
+### 💡 Example Usage
+```
+/create myservice-001 30days
+/extend myservice-001 15days
+/delete myservice-001
+/deleteuser 123456789
+/list
+/users
+/announce Hello, there's a maintenance window tomorrow!
+```
+
+## 📁 File Structure
+
+The bot automatically creates the following directories:
+
+- `📁 database/` - Stores OTT service entries as JSON files
+- `📁 users/` - Stores user records as JSON files
+- `📁 announcements/` - Stores announcement logs
+
+Each OTT service is stored as a JSON file named after its ID (e.g., `rtm-41806.json`) containing:
+- 📅 Expiration timestamp
+- 📆 Expiration description
+- 📱 Device limit
+- 📺 Playlist type
+- 👷 Creator information
+- 📋 Device list
+
+Each user record is stored as a JSON file named after their user ID containing:
+- 👤 User information (ID, username, first name, last name)
+- 🎁 List of claimed OTT services
+- 📅 Registration date
+- 🔔 Reminders sent tracking
+
+## ⚙️ How It Works
+
+### 👤 For Users:
+1. 👮 Admin creates an OTT service using `/create`
+2. 🤖 Bot generates a unique claim link (e.g., `https://t.me/yourbot?start=claim_service-id`)
+3. 👤 User clicks the link to claim the service
+4. 🤖 Bot verifies the OTT ID exists and hasn't been claimed
+5. 🎫 Service is linked to the user's account
+6. 🤖 Bot provides access URL and instructions
+
+### 👮 For Admins:
+1. 🛠️ Access management commands through the control panel
+2. ➕ ➖ 🔁 Create, extend, or delete services as needed
+3. 📊 Monitor active services and users
+4. 📢 Send announcements to all users
+
+### ⏰ Expiration Management:
+1. 🤖 Bot checks for expiring services every minute
+2. 🔔 Sends warnings 7, 3, and 1 day before expiration
+3. 🚫 Prevents duplicate reminders to the same user on the same day
+
+## 🔒 Security Considerations
+
+1. **🔑 Token Security**: Ensure your bot token remains secret and is not shared in public repositories
+2. **👥 Admin Access**: Only trusted users should be added to ADMIN_IDS
+3. **👤 User Data**: User information is stored in JSON files locally
+4. **🚫 Unique Claims**: Each OTT ID can only be claimed by one user
+5. **✅ Input Validation**: The bot validates inputs to prevent errors
+6. **⏳ Rate Limiting**: Small delays are implemented when sending bulk messages
+
+## 🆘 Support
+
+For assistance with the bot, contact the administrators listed in the configuration. 📞
+
+## 📄 License
+
+This project is developed for educational and personal use. Modify according to your needs. 📝
